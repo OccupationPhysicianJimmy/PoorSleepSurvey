@@ -1,1 +1,471 @@
 
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>成人失眠簡式問卷｜反直覺提問版</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #dbe3ee;
+      --accent: #2563eb;
+      --warn: #b45309;
+      --danger: #b91c1c;
+      --ok: #047857;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 32px auto;
+      padding: 0 16px 40px;
+    }
+    .header, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+    .header {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+    h1, h2, h3 { margin: 0 0 8px; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 20px; margin-bottom: 14px; }
+    h3 { font-size: 16px; margin-bottom: 10px; }
+    p { margin: 8px 0; }
+    .muted { color: var(--muted); }
+    .tip {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 14px;
+    }
+    .card {
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .field label, .question-title {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    input[type="text"], input[type="date"], input[type="number"], textarea, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      background: #fff;
+    }
+    textarea { min-height: 84px; resize: vertical; }
+    .choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .choice {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .choice input { margin: 0; }
+    .question {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      margin-bottom: 12px;
+      background: #fcfdff;
+    }
+    .question small {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .score-box {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .pill {
+      padding: 14px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+    }
+    .pill strong {
+      display: block;
+      font-size: 24px;
+      margin-top: 4px;
+    }
+    .result {
+      padding: 16px;
+      border-radius: 14px;
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .result.ok { border-color: #bbf7d0; background: #f0fdf4; }
+    .result.warn { border-color: #fde68a; background: #fffbeb; }
+    .result.danger { border-color: #fecaca; background: #fef2f2; }
+    .footer-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+    .print-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font: inherit;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+    }
+    button.secondary { background: #475569; }
+    @media (max-width: 760px) {
+      .grid, .score-box { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+    }
+    @media print {
+      body { background: white; }
+      .wrap { max-width: none; margin: 0; padding: 0; }
+      .header, .card { box-shadow: none; break-inside: avoid; }
+      .print-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="header">
+      <h1>成人失眠簡式問卷</h1>
+      <p class="muted">反直覺提問版：不直接問「你失眠嗎」，而是問「在本來應該好睡的情況下，你還是睡不好嗎？」</p>
+      <div class="tip">
+        適用情境：家醫科、一般門診、睡眠初診。目的：用少量問題先區分「真正失眠」和「睡太少、作息亂、打呼吸中止、焦慮共病」等情況。
+      </div>
+      <div class="print-bar">
+        <button onclick="window.print()">列印 / 另存 PDF</button>
+        <button class="secondary" onclick="resetForm()">清空表單</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>基本資料</h2>
+      <div class="grid">
+        <div class="field">
+          <label>姓名</label>
+          <input type="text" />
+        </div>
+        <div class="field">
+          <label>日期</label>
+          <input type="date" />
+        </div>
+        <div class="field">
+          <label>年齡</label>
+          <input type="number" min="0" max="120" />
+        </div>
+        <div class="field">
+          <label>轉介/主訴</label>
+          <input type="text" placeholder="例如：睡不著、半夜醒、很早醒" />
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>核心 6 題</h2>
+      <p class="muted">請以過去 2 週最常見的情況作答。每題 0–3 分：0 沒有、1 偶爾、2 常常、3 幾乎每天。</p>
+
+      <div class="question">
+        <div class="question-title">1. 假如隔天不用早起，你還是睡不著嗎？</div>
+        <small>用來排除單純作息壓縮或睡眠不足。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q1" value="0" onchange="calc()">0 沒有</label>
+          <label class="choice"><input type="radio" name="q1" value="1" onchange="calc()">1 偶爾</label>
+          <label class="choice"><input type="radio" name="q1" value="2" onchange="calc()">2 常常</label>
+          <label class="choice"><input type="radio" name="q1" value="3" onchange="calc()">3 幾乎每天</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">2. 明明身體很累，腦袋卻停不下來嗎？</div>
+        <small>抓認知喚醒與焦慮型失眠。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q2" value="0" onchange="calc()">0 沒有</label>
+          <label class="choice"><input type="radio" name="q2" value="1" onchange="calc()">1 偶爾</label>
+          <label class="choice"><input type="radio" name="q2" value="2" onchange="calc()">2 常常</label>
+          <label class="choice"><input type="radio" name="q2" value="3" onchange="calc()">3 幾乎每天</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">3. 你不是不想睡，而是「躺下後反而更清醒」嗎？</div>
+        <small>抓刺激控制失敗與條件化失眠。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q3" value="0" onchange="calc()">0 沒有</label>
+          <label class="choice"><input type="radio" name="q3" value="1" onchange="calc()">1 偶爾</label>
+          <label class="choice"><input type="radio" name="q3" value="2" onchange="calc()">2 常常</label>
+          <label class="choice"><input type="radio" name="q3" value="3" onchange="calc()">3 幾乎每天</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">4. 如果今天讓你午睡，你也不一定睡得著嗎？</div>
+        <small>有助區分失眠與睡眠不足；睡眠不足者通常一有機會就睡著。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q4" value="0" onchange="calc()">0 沒有</label>
+          <label class="choice"><input type="radio" name="q4" value="1" onchange="calc()">1 偶爾</label>
+          <label class="choice"><input type="radio" name="q4" value="2" onchange="calc()">2 常常</label>
+          <label class="choice"><input type="radio" name="q4" value="3" onchange="calc()">3 幾乎每天</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">5. 你最困擾的不是夜晚本身，而是隔天被它拖垮嗎？</div>
+        <small>抓白天功能受損，為失眠診斷核心之一。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q5" value="0" onchange="calc()">0 沒有</label>
+          <label class="choice"><input type="radio" name="q5" value="1" onchange="calc()">1 偶爾</label>
+          <label class="choice"><input type="radio" name="q5" value="2" onchange="calc()">2 常常</label>
+          <label class="choice"><input type="radio" name="q5" value="3" onchange="calc()">3 幾乎每天</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">6. 只要一開始擔心今晚睡不好，通常就真的更睡不好嗎？</div>
+        <small>抓睡眠焦慮與惡性循環。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q6" value="0" onchange="calc()">0 沒有</label>
+          <label class="choice"><input type="radio" name="q6" value="1" onchange="calc()">1 偶爾</label>
+          <label class="choice"><input type="radio" name="q6" value="2" onchange="calc()">2 常常</label>
+          <label class="choice"><input type="radio" name="q6" value="3" onchange="calc()">3 幾乎每天</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>補充 4 題：快速鑑別</h2>
+
+      <div class="question">
+        <div class="question-title">7. 若照你自己想睡的時間去睡，你其實睡得還可以？</div>
+        <small>是：偏向晝夜節律延遲，而不一定是典型失眠。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q7" value="1" onchange="calc()">是</label>
+          <label class="choice"><input type="radio" name="q7" value="0" onchange="calc()">否</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">8. 你睡不好時，比較像「睡不著」，不是「一睡就打呼、喘醒、白天想睡」？</div>
+        <small>否：要提高 OSA 警覺。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q8" value="1" onchange="calc()">是</label>
+          <label class="choice"><input type="radio" name="q8" value="0" onchange="calc()">否</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">9. 晚上真正讓你難受的，常是腿不舒服、想動，動了比較好？</div>
+        <small>是：考慮不寧腿症候群。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q9" value="1" onchange="calc()">是</label>
+          <label class="choice"><input type="radio" name="q9" value="0" onchange="calc()">否</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">10. 你最近不是突然變得不會睡，而是生活/情緒/藥物先亂了，睡才跟著亂？</div>
+        <small>是：優先找誘因與共病。</small>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q10" value="1" onchange="calc()">是</label>
+          <label class="choice"><input type="radio" name="q10" value="0" onchange="calc()">否</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>病程與頻率</h2>
+      <div class="grid">
+        <div class="field">
+          <label>每週大約幾天睡眠出問題？</label>
+          <select id="freq" onchange="calc()">
+            <option value="0">未填</option>
+            <option value="1">1–2 天</option>
+            <option value="2">3–4 天</option>
+            <option value="3">5–7 天</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>已持續多久？</label>
+          <select id="duration" onchange="calc()">
+            <option value="0">未填</option>
+            <option value="1">少於 1 個月</option>
+            <option value="2">1–3 個月</option>
+            <option value="3">超過 3 個月</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>紅旗徵象</h2>
+      <div class="question">
+        <div class="question-title">請勾選有無以下情形</div>
+        <div class="choices">
+          <label class="choice"><input type="checkbox" id="rf1" onchange="calc()">白天開車或開會時會不自主睡著</label>
+          <label class="choice"><input type="checkbox" id="rf2" onchange="calc()">家人目擊呼吸暫停或喘醒</label>
+          <label class="choice"><input type="checkbox" id="rf3" onchange="calc()">夢遊、睡中大叫、打人</label>
+          <label class="choice"><input type="checkbox" id="rf4" onchange="calc()">明顯憂鬱、自傷意念</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>自動判讀</h2>
+      <div class="score-box">
+        <div class="pill">
+          核心失眠分數
+          <strong id="coreScore">0</strong>
+          <span class="muted">滿分 18</span>
+        </div>
+        <div class="pill">
+          頻率指標
+          <strong id="freqScore">0</strong>
+          <span class="muted">每週 ≥3 天較支持</span>
+        </div>
+        <div class="pill">
+          病程指標
+          <strong id="durScore">0</strong>
+          <span class="muted">>3 個月較支持慢性</span>
+        </div>
+        <div class="pill">
+          紅旗數
+          <strong id="redFlagCount">0</strong>
+          <span class="muted">有紅旗建議轉介/檢查</span>
+        </div>
+      </div>
+
+      <div id="mainResult" class="result warn">
+        請完成上方問題。
+      </div>
+
+      <div class="result" id="subResult">
+        尚無補充判讀。
+      </div>
+
+      <div class="footer-note">
+        這是一份臨床篩檢與溝通工具，不等同正式量表診斷。若懷疑 OSA、RLS、晝夜節律障礙、重度情緒疾患或其他睡眠疾患，應進一步評估。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>醫師備註</h2>
+      <textarea placeholder="可記錄：睡眠衛教、刺激控制、睡眠限制、CBT-I、PHQ-9/GAD-7、STOP-Bang、Ferritin、轉介計畫等"></textarea>
+    </section>
+  </div>
+
+  <script>
+    function val(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? Number(checked.value) : 0;
+    }
+
+    function calc() {
+      const core = val('q1') + val('q2') + val('q3') + val('q4') + val('q5') + val('q6');
+      const freq = Number(document.getElementById('freq').value || 0);
+      const dur = Number(document.getElementById('duration').value || 0);
+      const q7 = val('q7');
+      const q8 = val('q8');
+      const q9 = val('q9');
+      const q10 = val('q10');
+
+      const redFlags = ['rf1', 'rf2', 'rf3', 'rf4'].filter(id => document.getElementById(id).checked).length;
+
+      document.getElementById('coreScore').textContent = core;
+      document.getElementById('freqScore').textContent = freq;
+      document.getElementById('durScore').textContent = dur;
+      document.getElementById('redFlagCount').textContent = redFlags;
+
+      const main = document.getElementById('mainResult');
+      const sub = document.getElementById('subResult');
+
+      let mainClass = 'warn';
+      let mainText = '資料不足，請完成作答。';
+
+      const enoughData = core > 0 || freq > 0 || dur > 0;
+
+      if (redFlags > 0) {
+        mainClass = 'danger';
+        mainText = '出現紅旗徵象：建議優先評估其他睡眠疾患、呼吸中止、異睡症、重度情緒問題，必要時轉介。';
+      } else if (enoughData) {
+        if (core >= 10 && freq >= 2 && dur >= 3) {
+          mainClass = 'danger';
+          mainText = '高度懷疑慢性失眠：已有明顯夜間症狀與白天影響，且頻率與病程支持。可考慮 CBT-I、睡眠日記與共病評估。';
+        } else if (core >= 7 && freq >= 2) {
+          mainClass = 'warn';
+          mainText = '可能為臨床顯著失眠：建議進一步問睡眠機會、白天功能、誘發因子、藥物物質與共病。';
+        } else if (core <= 6 && freq <= 1) {
+          mainClass = 'ok';
+          mainText = '較不像典型慢性失眠：先釐清是否為短期壓力、作息不規律或睡眠不足。';
+        } else {
+          mainClass = 'warn';
+          mainText = '睡眠困擾存在，但資訊介於中間。建議搭配睡眠日記與進一步病史。';
+        }
+      }
+
+      main.className = `result ${mainClass}`;
+      main.textContent = mainText;
+
+      let notes = [];
+      if (q7 === 1) notes.push('若依自己作息可睡好，偏向晝夜節律問題。');
+      if (q8 === 0) notes.push('若合併打鼾、喘醒、白天嗜睡，需考慮睡眠呼吸中止。');
+      if (q9 === 1) notes.push('腿部不適且活動改善，需考慮不寧腿症候群與鐵儲存不足。');
+      if (q10 === 1) notes.push('病因可能由情緒、壓力、藥物或生活事件觸發，需優先處理誘因。');
+      if (notes.length === 0) notes.push('目前未出現明確方向性的補充線索。');
+      sub.textContent = notes.join(' ');
+    }
+
+    function resetForm() {
+      document.querySelectorAll('input').forEach(el => {
+        if (el.type === 'radio' || el.type === 'checkbox') el.checked = false;
+        else el.value = '';
+      });
+      document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+      document.querySelectorAll('textarea').forEach(el => el.value = '');
+      calc();
+    }
+
+    calc();
+  </script>
+</body>
+</html>
