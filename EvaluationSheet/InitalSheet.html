@@ -1,1 +1,501 @@
 
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>成人失眠評估問卷（自動評估）</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #dbe3ee;
+      --primary: #2563eb;
+      --ok: #15803d;
+      --warn: #b45309;
+      --danger: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px 48px;
+    }
+    .header, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+    .header {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+    .card {
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 22px; }
+    h3 { font-size: 18px; }
+    .subtle { color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 780px) {
+      .grid, .grid-3 { grid-template-columns: 1fr; }
+    }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+    input[type="text"], input[type="number"], input[type="time"], select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      font-size: 15px;
+      background: #fff;
+    }
+    textarea { min-height: 84px; resize: vertical; }
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+    }
+    .option {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    th:first-child, td:first-child { text-align: left; }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #e5eefc;
+      color: #1d4ed8;
+    }
+    .result {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 900px) { .result { grid-template-columns: 1fr; } }
+    .scorebox {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fafcff;
+    }
+    .big {
+      font-size: 28px;
+      font-weight: 800;
+    }
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .danger { color: var(--danger); }
+    .summary {
+      white-space: pre-wrap;
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 14px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--primary);
+      color: white;
+    }
+    button.secondary {
+      background: #475569;
+    }
+    .small { font-size: 13px; color: var(--muted); }
+    .checkgrid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+    }
+    @media (max-width: 780px) { .checkgrid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>成人失眠評估問卷</h1>
+      <div class="subtle">門診版｜HTML 單檔｜自動計分與初步判讀</div>
+    </div>
+
+    <div class="card">
+      <h2>基本資料</h2>
+      <div class="grid-3">
+        <div>
+          <label for="name">姓名</label>
+          <input id="name" type="text" />
+        </div>
+        <div>
+          <label for="mrn">病歷號</label>
+          <input id="mrn" type="text" />
+        </div>
+        <div>
+          <label for="date">日期</label>
+          <input id="date" type="text" />
+        </div>
+        <div>
+          <label for="age">年齡</label>
+          <input id="age" type="number" min="0" max="120" />
+        </div>
+        <div>
+          <label for="sex">性別</label>
+          <select id="sex">
+            <option value="">請選擇</option>
+            <option>男</option>
+            <option>女</option>
+            <option>其他</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>一、主訴與病程</h2>
+      <h3>1. 你目前最主要的睡眠困擾是？</h3>
+      <div class="checkgrid">
+        <label class="option"><input type="checkbox" name="complaint" value="很難入睡">很難入睡</label>
+        <label class="option"><input type="checkbox" name="complaint" value="半夜容易醒來">半夜容易醒來</label>
+        <label class="option"><input type="checkbox" name="complaint" value="醒來後很難再睡">醒來後很難再睡</label>
+        <label class="option"><input type="checkbox" name="complaint" value="太早醒來">太早醒來</label>
+        <label class="option"><input type="checkbox" name="complaint" value="睡眠品質差、睡不飽">睡眠品質差、睡不飽</label>
+      </div>
+      <div style="margin-top:12px;">
+        <label for="complaintOther">其他</label>
+        <input id="complaintOther" type="text" />
+      </div>
+
+      <div class="grid" style="margin-top:16px;">
+        <div>
+          <label for="duration">2. 這個問題持續多久？</label>
+          <select id="duration">
+            <option value="">請選擇</option>
+            <option value="lt1w">少於 1 週</option>
+            <option value="1w1m">1 週～1 個月</option>
+            <option value="1m3m">1～3 個月</option>
+            <option value="gt3m">超過 3 個月</option>
+            <option value="recurrent">反覆發作很多年</option>
+          </select>
+        </div>
+        <div>
+          <label for="freq">3. 平均每週發生幾天？</label>
+          <select id="freq">
+            <option value="">請選擇</option>
+            <option value="1-2">1–2 天</option>
+            <option value="3-4">3–4 天</option>
+            <option value="5-7">5–7 天</option>
+          </select>
+        </div>
+      </div>
+
+      <h3 style="margin-top:16px;">4. 是否有明顯誘發事件？</h3>
+      <div class="checkgrid">
+        <label class="option"><input type="checkbox" name="trigger" value="工作壓力">工作壓力</label>
+        <label class="option"><input type="checkbox" name="trigger" value="家庭/人際事件">家庭/人際事件</label>
+        <label class="option"><input type="checkbox" name="trigger" value="疾病或疼痛">疾病或疼痛</label>
+        <label class="option"><input type="checkbox" name="trigger" value="喪親/重大失落">喪親/重大失落</label>
+        <label class="option"><input type="checkbox" name="trigger" value="輪班/時差">輪班/時差</label>
+        <label class="option"><input type="checkbox" name="trigger" value="藥物或物質使用">藥物或物質使用</label>
+      </div>
+      <div style="margin-top:12px;">
+        <label for="triggerOther">其他</label>
+        <input id="triggerOther" type="text" />
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>二、睡眠型態</h2>
+      <div class="grid-3">
+        <div><label for="bedtime">平日上床時間</label><input id="bedtime" type="time" /></div>
+        <div><label for="lightsOff">關燈時間</label><input id="lightsOff" type="time" /></div>
+        <div><label for="sleepLatency">入睡需時（分鐘）</label><input id="sleepLatency" type="number" min="0" /></div>
+        <div><label for="awakenings">夜間醒來次數</label><input id="awakenings" type="number" min="0" /></div>
+        <div><label for="wakeAfterSleep">夜間清醒總時長（分鐘）</label><input id="wakeAfterSleep" type="number" min="0" /></div>
+        <div><label for="finalWake">最後醒來時間</label><input id="finalWake" type="time" /></div>
+        <div><label for="outOfBed">起床時間</label><input id="outOfBed" type="time" /></div>
+        <div><label for="totalSleep">總睡眠時間（小時）</label><input id="totalSleep" type="number" min="0" max="24" step="0.5" /></div>
+        <div><label for="weekendSleep">假日總睡眠時間（小時）</label><input id="weekendSleep" type="number" min="0" max="24" step="0.5" /></div>
+      </div>
+      <div class="grid" style="margin-top:12px;">
+        <div>
+          <label for="naps">是否午睡</label>
+          <select id="naps">
+            <option value="無">無</option>
+            <option value="偶爾">偶爾</option>
+            <option value="幾乎每天">幾乎每天</option>
+          </select>
+        </div>
+        <div>
+          <label for="napMin">午睡時間（分鐘）</label>
+          <input id="napMin" type="number" min="0" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>三、失眠核心診斷項目</h2>
+      <div class="small">0 = 沒有　1 = 偶爾　2 = 常常　3 = 幾乎每天</div>
+      <div class="table-wrap" style="margin-top:10px;">
+        <table>
+          <thead>
+            <tr><th>項目</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>a. 躺床後超過 30 分鐘還睡不著</td><td><input type="radio" name="q8a" value="0" checked></td><td><input type="radio" name="q8a" value="1"></td><td><input type="radio" name="q8a" value="2"></td><td><input type="radio" name="q8a" value="3"></td></tr>
+            <tr><td>b. 半夜醒來且清醒超過 30 分鐘</td><td><input type="radio" name="q8b" value="0" checked></td><td><input type="radio" name="q8b" value="1"></td><td><input type="radio" name="q8b" value="2"></td><td><input type="radio" name="q8b" value="3"></td></tr>
+            <tr><td>c. 比預期早醒超過 30 分鐘</td><td><input type="radio" name="q8c" value="0" checked></td><td><input type="radio" name="q8c" value="1"></td><td><input type="radio" name="q8c" value="2"></td><td><input type="radio" name="q8c" value="3"></td></tr>
+            <tr><td>d. 明明有時間睡，仍睡不好</td><td><input type="radio" name="q8d" value="0" checked></td><td><input type="radio" name="q8d" value="1"></td><td><input type="radio" name="q8d" value="2"></td><td><input type="radio" name="q8d" value="3"></td></tr>
+            <tr><td>e. 擔心自己睡不好</td><td><input type="radio" name="q8e" value="0" checked></td><td><input type="radio" name="q8e" value="1"></td><td><input type="radio" name="q8e" value="2"></td><td><input type="radio" name="q8e" value="3"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>四、白天功能影響</h2>
+      <div class="small">0 = 沒有　1 = 輕微　2 = 中等　3 = 明顯</div>
+      <div class="table-wrap" style="margin-top:10px;">
+        <table>
+          <thead>
+            <tr><th>項目</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>a. 白天疲倦或沒精神</td><td><input type="radio" name="q9a" value="0" checked></td><td><input type="radio" name="q9a" value="1"></td><td><input type="radio" name="q9a" value="2"></td><td><input type="radio" name="q9a" value="3"></td></tr>
+            <tr><td>b. 注意力差、記憶差</td><td><input type="radio" name="q9b" value="0" checked></td><td><input type="radio" name="q9b" value="1"></td><td><input type="radio" name="q9b" value="2"></td><td><input type="radio" name="q9b" value="3"></td></tr>
+            <tr><td>c. 工作/學習表現下降</td><td><input type="radio" name="q9c" value="0" checked></td><td><input type="radio" name="q9c" value="1"></td><td><input type="radio" name="q9c" value="2"></td><td><input type="radio" name="q9c" value="3"></td></tr>
+            <tr><td>d. 情緒差、易怒、焦慮</td><td><input type="radio" name="q9d" value="0" checked></td><td><input type="radio" name="q9d" value="1"></td><td><input type="radio" name="q9d" value="2"></td><td><input type="radio" name="q9d" value="3"></td></tr>
+            <tr><td>e. 開車或工作時容易出錯</td><td><input type="radio" name="q9e" value="0" checked></td><td><input type="radio" name="q9e" value="1"></td><td><input type="radio" name="q9e" value="2"></td><td><input type="radio" name="q9e" value="3"></td></tr>
+            <tr><td>f. 白天嗜睡</td><td><input type="radio" name="q9f" value="0" checked></td><td><input type="radio" name="q9f" value="1"></td><td><input type="radio" name="q9f" value="2"></td><td><input type="radio" name="q9f" value="3"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:12px;">
+        <label for="distress">10. 整體困擾程度（0–10）</label>
+        <input id="distress" type="number" min="0" max="10" value="0" />
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>五、睡眠衛生與誘因</h2>
+      <div class="checkgrid">
+        <label class="option"><input type="checkbox" name="hygiene" value="睡前 6 小時內咖啡因">睡前 6 小時內喝咖啡 / 茶 / 能量飲</label>
+        <label class="option"><input type="checkbox" name="hygiene" value="睡前飲酒">睡前飲酒</label>
+        <label class="option"><input type="checkbox" name="hygiene" value="睡前抽菸">睡前抽菸 / 尼古丁</label>
+        <label class="option"><input type="checkbox" name="hygiene" value="睡前螢幕">睡前滑手機、平板、電腦 >30 分鐘</label>
+        <label class="option"><input type="checkbox" name="hygiene" value="睡前劇烈運動">睡前劇烈運動</label>
+        <label class="option"><input type="checkbox" name="hygiene" value="睡眠環境不佳">臥室太亮 / 太吵 / 太熱 / 太冷</label>
+        <label class="option"><input type="checkbox" name="hygiene" value="作息不固定">上床時間很不固定</label>
+        <label class="option"><input type="checkbox" name="hygiene" value="床上做其他事">會在床上工作、看電視、吃東西</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>六、藥物與物質</h2>
+      <div class="checkgrid">
+        <label class="option"><input type="checkbox" name="substance" value="安眠藥">安眠藥</label>
+        <label class="option"><input type="checkbox" name="substance" value="酒精">酒精</label>
+        <label class="option"><input type="checkbox" name="substance" value="咖啡因">咖啡因</label>
+        <label class="option"><input type="checkbox" name="substance" value="尼古丁">尼古丁</label>
+        <label class="option"><input type="checkbox" name="substance" value="大麻">大麻</label>
+        <label class="option"><input type="checkbox" name="substance" value="提神藥物">提神藥物</label>
+        <label class="option"><input type="checkbox" name="substance" value="類固醇">類固醇</label>
+        <label class="option"><input type="checkbox" name="substance" value="抗憂鬱藥">抗憂鬱藥</label>
+        <label class="option"><input type="checkbox" name="substance" value="鼻塞藥/感冒藥">鼻塞藥 / 感冒藥</label>
+      </div>
+      <div class="grid" style="margin-top:12px;">
+        <div>
+          <label for="substanceOther">其他</label>
+          <input id="substanceOther" type="text" />
+        </div>
+        <div>
+          <label for="dependence">是否擔心不吃藥就睡不著？</label>
+          <select id="dependence">
+            <option value="否">否</option>
+            <option value="是">是</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>七、其他睡眠疾病篩檢</h2>
+      <h3>A. OSA 警訊</h3>
+      <div class="checkgrid">
+        <label class="option"><input type="checkbox" name="osa" value="大聲打鼾">大聲打鼾</label>
+        <label class="option"><input type="checkbox" name="osa" value="呼吸暫停">家人發現睡覺會呼吸暫停</label>
+        <label class="option"><input type="checkbox" name="osa" value="嗆醒/喘醒">夜間嗆醒 / 喘醒</label>
+        <label class="option"><input type="checkbox" name="osa" value="早晨頭痛">早晨頭痛</label>
+        <label class="option"><input type="checkbox" name="osa" value="白天明顯嗜睡">白天明顯嗜睡</label>
+        <label class="option"><input type="checkbox" name="osa" value="高血壓">高血壓</label>
+        <label class="option"><input type="checkbox" name="osa" value="肥胖或頸圍較粗">肥胖或頸圍較粗</label>
+      </div>
+
+      <h3 style="margin-top:16px;">B. RLS 警訊</h3>
+      <div class="checkgrid">
+        <label class="option"><input type="checkbox" name="rls" value="腿部不適">腿部不舒服、痠麻脹癢、坐不住</label>
+        <label class="option"><input type="checkbox" name="rls" value="活動改善">動一動或走動會改善</label>
+        <label class="option"><input type="checkbox" name="rls" value="晚上較明顯">晚上比白天更明顯</label>
+      </div>
+
+      <h3 style="margin-top:16px;">C. 晝夜節律問題</h3>
+      <div class="checkgrid">
+        <label class="option"><input type="checkbox" name="circadian" value="晚睡晚起">平日很晚才想睡，假日可以自然睡很晚</label>
+        <label class="option"><input type="checkbox" name="circadian" value="依自己作息就正常">只要照自己想睡的時間睡，睡眠就正常</label>
+        <label class="option"><input type="checkbox" name="circadian" value="輪班">常輪班或作息日夜顛倒</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>八、情緒共病簡篩</h2>
+      <div class="small">0 = 完全沒有　1 = 幾天　2 = 一半以上天數　3 = 幾乎每天</div>
+      <div class="table-wrap" style="margin-top:10px;">
+        <table>
+          <thead>
+            <tr><th>項目</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>a. 覺得情緒低落、沮喪、沒有希望</td><td><input type="radio" name="mooda" value="0" checked></td><td><input type="radio" name="mooda" value="1"></td><td><input type="radio" name="mooda" value="2"></td><td><input type="radio" name="mooda" value="3"></td></tr>
+            <tr><td>b. 對事情失去興趣或樂趣</td><td><input type="radio" name="moodb" value="0" checked></td><td><input type="radio" name="moodb" value="1"></td><td><input type="radio" name="moodb" value="2"></td><td><input type="radio" name="moodb" value="3"></td></tr>
+            <tr><td>c. 感到緊張、焦慮、無法放鬆</td><td><input type="radio" name="moodc" value="0" checked></td><td><input type="radio" name="moodc" value="1"></td><td><input type="radio" name="moodc" value="2"></td><td><input type="radio" name="moodc" value="3"></td></tr>
+            <tr><td>d. 一直擔心很多事，停不下來</td><td><input type="radio" name="moodd" value="0" checked></td><td><input type="radio" name="moodd" value="1"></td><td><input type="radio" name="moodd" value="2"></td><td><input type="radio" name="moodd" value="3"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>九、紅旗徵象</h2>
+      <div class="checkgrid">
+        <label class="option"><input type="checkbox" name="redflag" value="不自主睡著">白天會不自主睡著</label>
+        <label class="option"><input type="checkbox" name="redflag" value="開車風險">開車曾差點睡著 / 出車禍</label>
+        <label class="option"><input type="checkbox" name="redflag" value="睡眠異常行為">異常行為（夢遊、睡眠中大叫或打人）</label>
+        <label class="option"><input type="checkbox" name="redflag" value="夜間呼吸困難">睡眠時胸悶、呼吸困難</label>
+        <label class="option"><input type="checkbox" name="redflag" value="自傷想法">嚴重憂鬱、自傷想法</label>
+        <label class="option"><input type="checkbox" name="redflag" value="全身症狀">近期體重明顯變化或全身症狀</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>自動評估結果</h2>
+      <div class="result">
+        <div>
+          <div class="scorebox">
+            <div class="pill">核心判讀</div>
+            <p id="diagnosisText" class="big">尚未評估</p>
+            <p id="subDiagnosis" class="subtle"></p>
+          </div>
+          <div class="scorebox" style="margin-top:12px;">
+            <div class="pill">建議</div>
+            <div id="recommendations"></div>
+          </div>
+          <div class="scorebox" style="margin-top:12px;">
+            <div class="pill">病歷摘要</div>
+            <div id="chartSummary" class="summary">請填答問卷後自動生成。</div>
+          </div>
+        </div>
+        <div>
+          <div class="scorebox">
+            <div>夜間症狀分數</div>
+            <div id="nightScore" class="big">0 / 15</div>
+          </div>
+          <div class="scorebox" style="margin-top:12px;">
+            <div>白天功能分數</div>
+            <div id="dayScore" class="big">0 / 18</div>
+          </div>
+          <div class="scorebox" style="margin-top:12px;">
+            <div>情緒共病簡篩</div>
+            <div id="moodScore" class="big">0 / 12</div>
+          </div>
+          <div class="scorebox" style="margin-top:12px;">
+            <div>整體嚴重度</div>
+            <div id="severityText" class="big">無</div>
+          </div>
+        </div>
+      </div>
+      <div class="actions" style="margin-top:16px;">
+        <button onclick="window.print()">列印 / 另存 PDF</button>
+        <button class="secondary" onclick="resetFormAll()">清除重填</button>
+      </div>
+      <p class="small" style="margin-top:10px;">
+        本頁為臨床輔助工具，供門診初步評估與追蹤使用；不取代正式診斷量表、完整病史、身體檢查與專科判斷。
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function radioValue(name) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? Number(el.value) : 0;
+    }
+
+    function checkedValues(name) {
+      return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+    }
+
+    function setHtml(id, html) {
+      document.getElementById(id).innerHTML = html;
+    }
+
+    function setText(id, text, cls = "") {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = cls ? `big ${cls}` : 'big';
+    }
+
+    function scoreSeverity(total) {
+      if (total === 0) return { text: '無', cls: '' };
+      if (total <= 7) return { text: '輕微', cls: 'ok' };
+      if (total <= 15) return { text: '中等', cls: 'warn' };
+      return { text: '明顯', cls: 'danger' };
+    }
+
+    function evaluate() {
+      const night = ['q8a','q8b','q8c','q8d','q8e'].reduce((s, n) => s + radioValue(n), 0);
+      c
