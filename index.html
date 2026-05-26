@@ -24,7 +24,6 @@
             --bg-color: #f4f7f6;
             --text-color: #333;
         }
-
         body {
             font-family: "Microsoft JhengHei", "Apple LiGothic Medium", sans-serif;
             line-height: 1.6;
@@ -33,7 +32,6 @@
             margin: 0;
             padding: 0;
         }
-
         .container {
             max-width: 800px;
             margin: 20px auto;
@@ -42,14 +40,12 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border-radius: 8px;
         }
-
         header {
             text-align: center;
             border-bottom: 2px solid var(--accent-color);
             padding-bottom: 20px;
             margin-bottom: 30px;
         }
-
         h1 { color: var(--primary-color); margin-bottom: 10px; }
         h2 { color: var(--secondary-color); border-left: 5px solid var(--accent-color); padding-left: 15px; margin-top: 30px; }
         
@@ -60,7 +56,6 @@
             gap: 15px;
             margin: 20px 0;
         }
-
         .eval-card {
             background: #fff;
             border: 1px solid #e0e0e0;
@@ -72,18 +67,67 @@
             transition: all 0.3s ease;
             display: block;
         }
-
         .eval-card:hover {
             border-color: var(--accent-color);
             box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
             transform: translateY(-2px);
         }
-
         .eval-card strong {
             display: block;
             font-size: 1.1em;
             margin-bottom: 5px;
             color: var(--accent-color);
+        }
+
+        /* 處置方式卡片樣式 */
+        .management-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mgmt-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        .mgmt-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--success-color), #2ecc71);
+        }
+        .mgmt-card:hover {
+            border-color: var(--success-color);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
+            transform: translateY(-2px);
+        }
+        .mgmt-card .card-icon {
+            font-size: 2em;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .mgmt-card strong {
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: var(--success-color);
+        }
+        .mgmt-card span {
+            font-size: 0.88em;
+            color: #666;
+            line-height: 1.4;
         }
 
         .highlight-box {
@@ -92,26 +136,21 @@
             padding: 20px;
             margin: 20px 0;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
         }
-
         th, td {
             border: 1px solid #ddd;
             padding: 12px;
             text-align: left;
         }
-
         th { background-color: var(--primary-color); color: white; }
-
         .tips-list {
             list-style: none;
             padding: 0;
         }
-
         .tips-list li {
             background: #fff;
             margin-bottom: 10px;
@@ -119,7 +158,6 @@
             border-left: 4px solid var(--success-color);
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-
         .footer {
             text-align: center;
             font-size: 0.9em;
@@ -128,21 +166,19 @@
             padding-top: 20px;
             border-top: 1px solid #eee;
         }
-
         @media (max-width: 600px) {
             .container { padding: 20px; width: 95%; }
             .evaluation-section { grid-template-columns: 1fr; }
+            .management-section { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-
 <div class="container">
     <header>
         <h1>🌙 找回失落的熟睡</h1>
         <p>睡眠障礙入門完全指南</p>
     </header>
-
     <section>
         <h2>📋 睡眠評估工具</h2>
         <p>透過專業的評估量表，了解您的睡眠狀況與潛在風險：</p>
@@ -159,13 +195,39 @@
     </section>
 
     <section>
+        <h2>🩺 睡眠的處置方式</h2>
+        <p>針對不同睡眠問題，提供多元的治療與管理方向：</p>
+        <div class="management-section">
+            <a href="Management/SleepManageReview.html" class="mgmt-card">
+                <span class="card-icon">📝</span>
+                <strong>整體評估與回顧</strong>
+                <span>全面了解睡眠障礙的診斷流程與處置概覽</span>
+            </a>
+            <a href="Management/SleepManagementCBT.html" class="mgmt-card">
+                <span class="card-icon">🧠</span>
+                <strong>認知行為治療（CBT-I）</strong>
+                <span>透過認知與行為介入，改善失眠的第一線療法</span>
+            </a>
+            <a href="Management/SleepManagementMedication.html" class="mgmt-card">
+                <span class="card-icon">💊</span>
+                <strong>藥物治療</strong>
+                <span>了解睡眠相關藥物的種類、適應症與注意事項</span>
+            </a>
+            <a href="Management/SleepManagementSpecialGroup.html" class="mgmt-card">
+                <span class="card-icon">👥</span>
+                <strong>特殊族群的處置</strong>
+                <span>針對孕婦、老年人、兒童等特殊族群的睡眠管理建議</span>
+            </a>
+        </div>
+    </section>
+
+    <section>
         <h2>什麼是睡眠障礙？</h2>
         <p>睡眠障礙（Sleep Disorders）不只是「睡不著」，它涵蓋了睡眠的<strong>質量、時間或長度</strong>出現異常，進而影響日間的精神與身體機能。</p>
         <div class="highlight-box">
             <strong>💡 專業提醒：</strong> 如果睡眠問題每週出現 3 次以上，且持續超過 3 個月，建議尋求專業醫療建議。
         </div>
     </section>
-
     <section>
         <h2>常見類型</h2>
         <table>
@@ -191,7 +253,6 @@
             </tbody>
         </table>
     </section>
-
     <section>
         <h2>5 個改善睡眠的小撇步</h2>
         <ul class="tips-list">
@@ -202,11 +263,9 @@
             <li><strong>床位專用化：</strong> 床只用來睡覺，不要在床上工作。</li>
         </ul>
     </section>
-
     <div class="footer">
         <p>&copy; 2026 睡眠健康網 - 內容僅供參考，診斷請諮詢專業醫療人員</p>
     </div>
 </div>
-
 </body>
 </html>
